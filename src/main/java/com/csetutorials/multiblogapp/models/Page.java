@@ -32,7 +32,7 @@ public class Page {
 	@Basic(fetch = FetchType.LAZY)
 	String content;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "websiteId")
 	Website website;
 

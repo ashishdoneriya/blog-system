@@ -8,7 +8,7 @@
             <p class="entry-title entry-title-cover-empty h2">
                 Tag : {{tag.name}}
             </p>
-            <div class="post-letter">{{tag.name | slice(0, 1)}</div>
+            <div class="post-letter">{{tag.name | slice(0, 1)}}</div>
         </header>
         <ul
                 class="wp-block-rss is-grid columns-2 columns-2"
@@ -20,7 +20,7 @@
                 </div>
                 <span class="wp-block-rss__item-author" style="margin-top: 8px">
 					<span>In </span>
-					{% for cat in posts.categories %}
+					{% for cat in post.categories %}
 					<span>
 						{% if not loop.first %}
 						<span>,</span>

@@ -31,7 +31,7 @@ public class Category {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Post> posts;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "websiteId")
 	Website website;
 

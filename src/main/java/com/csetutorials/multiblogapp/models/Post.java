@@ -37,21 +37,21 @@ public class Post {
 	@Basic(fetch = FetchType.LAZY)
 	String content;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "postCategories",
 			joinColumns = @JoinColumn(name = "postId"),
 			inverseJoinColumns = @JoinColumn(name = "categoryId"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Category> categories;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "postTags",
 			joinColumns = @JoinColumn(name = "postId"),
 			inverseJoinColumns = @JoinColumn(name = "tagId"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Tag> tags;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "websiteId")
 	Website website;
 }

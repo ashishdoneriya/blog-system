@@ -9,7 +9,9 @@ import com.csetutorials.multiblogapp.services.PageService;
 import com.csetutorials.multiblogapp.services.PostService;
 import com.csetutorials.multiblogapp.services.TagService;
 import com.csetutorials.multiblogapp.services.UserService;
+import com.csetutorials.multiblogapp.services.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,20 +32,40 @@ public class LayoutController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	WebsiteService websiteService;
+
+	@RequestMapping({"/", "/index.html"})
+	public String findBy(Model model) {
+		model.addAttribute("website", websiteService.getWebsite());
+		addPosts(model, postService.findAll(1));
+		return "index";
+	}
+
+	@RequestMapping("/page/{pageNumber}")
+	public String findByPaginated(Model model, @PathVariable("pageNumber") int pageNumber) {
+		model.addAttribute("website", websiteService.getWebsite());
+		model.addAttribute("post", postService.findAll(pageNumber));
+		return "index";
+	}
+
 	@RequestMapping("/{slug}.html")
 	public String findByPostSlug(Model model, @PathVariable("slug") String slug) {
+		model.addAttribute("website", websiteService.getWebsite());
 		model.addAttribute("post", postService.findByPostSlug(slug));
 		return "post";
 	}
 
 	@RequestMapping("/{slug}")
 	public String findByPageSlug(Model model, @PathVariable("slug") String slug) {
-		model.addAttribute("post", pageService.findBySlug(slug));
-		return "post";
+		model.addAttribute("website", websiteService.getWebsite());
+		model.addAttribute("page", pageService.findBySlug(slug));
+		return "page";
 	}
 
 	@RequestMapping("/topics/{slug}")
 	public String findPostsByTopic(Model model, @PathVariable("slug") String slug) {
+		model.addAttribute("website", websiteService.getWebsite());
 		Category category = categoryService.getCategory(slug);
 		model.addAttribute("category", category);
 		addPosts(model, postService.findByCategory(category, 1));
@@ -51,7 +73,9 @@ public class LayoutController {
 	}
 
 	@RequestMapping("/topics/{slug}/page/{pageNumber}")
-	public String findPostsByTopicPaginated(Model model, @PathVariable("slug") String slug, int pageNumber) {
+	public String findPostsByTopicPaginated(Model model, @PathVariable("slug") String slug,
+											@PathVariable("pageNumber") int pageNumber) {
+		model.addAttribute("website", websiteService.getWebsite());
 		Category category = categoryService.getCategory(slug);
 		model.addAttribute("category", category);
 		addPosts(model, postService.findByCategory(category, pageNumber));
@@ -60,6 +84,7 @@ public class LayoutController {
 
 	@RequestMapping("/tags/{slug}")
 	public String findPostsByTag(Model model, @PathVariable("slug") String slug) {
+		model.addAttribute("website", websiteService.getWebsite());
 		Tag tag = tagService.getTag(slug);
 		model.addAttribute("tag", tag);
 		addPosts(model, postService.findByTag(tag, 1));
@@ -67,7 +92,8 @@ public class LayoutController {
 	}
 
 	@RequestMapping("/tags/{slug}/page/{pageNumber}")
-	public String findPostsByTagPaginated(Model model, @PathVariable("slug") String slug, int pageNumber) {
+	public String findPostsByTagPaginated(Model model, @PathVariable("slug") String slug, @PathVariable("pageNumber") int pageNumber) {
+		model.addAttribute("website", websiteService.getWebsite());
 		Tag tag = tagService.getTag(slug);
 		model.addAttribute("tag", tag);
 		addPosts(model, postService.findByTag(tag, pageNumber));
@@ -76,6 +102,7 @@ public class LayoutController {
 
 	@RequestMapping("/authors/{slug}")
 	public String findPostsByAuthor(Model model, @PathVariable("slug") String slug) {
+		model.addAttribute("website", websiteService.getWebsite());
 		User user = userService.findBySlug(slug);
 		model.addAttribute("user", postService.findByAuthor(user, 1));
 		addPosts(model, postService.findByAuthor(user, 1));
@@ -83,7 +110,8 @@ public class LayoutController {
 	}
 
 	@RequestMapping("/authors/{slug}/page/{pageNumber}")
-	public String findPostsByAuthorPaginated(Model model, @PathVariable("slug") String slug, int pageNumber) {
+	public String findPostsByAuthorPaginated(Model model, @PathVariable("slug") String slug, @PathVariable("pageNumber") int pageNumber) {
+		model.addAttribute("website", websiteService.getWebsite());
 		User user = userService.findBySlug(slug);
 		model.addAttribute("user", postService.findByAuthor(user, 1));
 		addPosts(model, postService.findByAuthor(user, pageNumber));

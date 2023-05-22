@@ -31,7 +31,7 @@ public class Tag {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Post> posts;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "websiteId")
 	Website website;
 }

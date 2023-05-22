@@ -39,7 +39,7 @@ public class User {
 	@Column
 	Role role;
 
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	SocialMediaLinks socialMediaLinks;
 

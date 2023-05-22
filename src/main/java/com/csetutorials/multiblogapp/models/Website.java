@@ -5,13 +5,16 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,13 +27,14 @@ public class Website {
 	@GeneratedValue
 	Long id;
 
+	@Column
 	String name;
 
+	@Column(unique = true)
 	String domain;
 
+	@Column
 	String description;
-
-	int pageSize = 10;
 
 	@OneToMany(mappedBy = "website", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -52,5 +56,8 @@ public class Website {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Tag> tags;
 
+	@OneToOne(mappedBy = "website", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	WebsiteSetting settings;
 
 }
