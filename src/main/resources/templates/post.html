@@ -1,0 +1,43 @@
+{% extends "default" %}
+
+{% block content %}
+<div class="typology-section">
+    <div class="section-content">
+        <article class="typology-post typology-single-post">
+            <header class="entry-header clearfix">
+                <h1 class="entry-title entry-title-cover-empty h2">{{post.title}}</h1>
+                <div class="entry-meta">
+                    <div class="meta-item meta-author" style="vertical-align: middle"> By <span
+                            class="vcard author"><span
+                            class="fn">
+									<a href="/authors/{{post.author.slug}}"> {{post.author.name}}</a>
+								</span></span>
+                    </div>
+                    <div class="meta-item meta-date" style="vertical-align: middle">
+                        <span class="updated">Last Updated on {{post.updated | date("MMM dd, yyyy")}} </span>
+                    </div>
+                </div>
+                <div class="post-letter"> {{post.title | slice(0, 1)}}</div>
+            </header>
+            <div class="entry-content clearfix">
+                {{post.content}}
+                <div class="clearfix entry-actions">
+                    <span>Published in: </span>
+                    {% for category in post.categories %}
+                    <span>
+						{% if not loop.first %}
+						<span>,</span>
+						{% endif %}
+						<a href="/topics/{{category.slug}}">{{category.name}}</a>
+						</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="clearfix entry-actions">
+                <span>Originally Published On </span><span> : </span><span>{{post.created | date("MMM dd, yyyy")}}</span>
+            </div>
+        </article>
+    </div>
+</div>
+
+{% endblock %}
