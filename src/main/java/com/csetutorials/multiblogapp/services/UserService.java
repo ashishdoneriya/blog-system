@@ -10,10 +10,8 @@ public class UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	@Autowired
-	WebsiteService websiteService;
 
 	public User findBySlug(String slug) {
-		return userRepository.findByWebsiteAndSlug(websiteService.getWebsite(), slug);
+		return userRepository.findBySlug(slug);
 	}
 }

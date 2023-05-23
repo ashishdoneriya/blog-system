@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class Post {
 	String description;
 	String slug;
 	@Basic(fetch = FetchType.LAZY)
+	@Column(length = 5000)
 	String content;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -51,7 +54,13 @@ public class Post {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Tag> tags;
 
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	List<Comment> comments;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "websiteId")
 	Website website;
+
+
 }

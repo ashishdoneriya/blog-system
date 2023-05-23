@@ -3,6 +3,8 @@ package com.csetutorials.multiblogapp.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,10 +25,12 @@ public class WebsiteUser {
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	User user;
 
 	@ManyToOne
 	@JoinColumn(name = "websiteId")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	Website website;
 
 	Role role;

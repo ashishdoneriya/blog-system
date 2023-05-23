@@ -2,6 +2,8 @@ package com.csetutorials.multiblogapp.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,5 +42,6 @@ public class SocialMediaLinks {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 }

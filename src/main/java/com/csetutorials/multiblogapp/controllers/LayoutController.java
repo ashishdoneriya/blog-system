@@ -11,7 +11,6 @@ import com.csetutorials.multiblogapp.services.TagService;
 import com.csetutorials.multiblogapp.services.UserService;
 import com.csetutorials.multiblogapp.services.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LayoutController {
+
 
 	@Autowired
 	PostService postService;
@@ -74,7 +74,7 @@ public class LayoutController {
 
 	@RequestMapping("/topics/{slug}/page/{pageNumber}")
 	public String findPostsByTopicPaginated(Model model, @PathVariable("slug") String slug,
-											@PathVariable("pageNumber") int pageNumber) {
+			@PathVariable("pageNumber") int pageNumber) {
 		model.addAttribute("website", websiteService.getWebsite());
 		Category category = categoryService.getCategory(slug);
 		model.addAttribute("category", category);
@@ -104,7 +104,7 @@ public class LayoutController {
 	public String findPostsByAuthor(Model model, @PathVariable("slug") String slug) {
 		model.addAttribute("website", websiteService.getWebsite());
 		User user = userService.findBySlug(slug);
-		model.addAttribute("user", postService.findByAuthor(user, 1));
+		model.addAttribute("user", user);
 		addPosts(model, postService.findByAuthor(user, 1));
 		return "author";
 	}
@@ -113,7 +113,7 @@ public class LayoutController {
 	public String findPostsByAuthorPaginated(Model model, @PathVariable("slug") String slug, @PathVariable("pageNumber") int pageNumber) {
 		model.addAttribute("website", websiteService.getWebsite());
 		User user = userService.findBySlug(slug);
-		model.addAttribute("user", postService.findByAuthor(user, 1));
+		model.addAttribute("user", user);
 		addPosts(model, postService.findByAuthor(user, pageNumber));
 		return "author";
 	}

@@ -1,6 +1,7 @@
 package com.csetutorials.multiblogapp;
 
 import com.csetutorials.multiblogapp.models.Category;
+import com.csetutorials.multiblogapp.models.Comment;
 import com.csetutorials.multiblogapp.models.Page;
 import com.csetutorials.multiblogapp.models.Post;
 import com.csetutorials.multiblogapp.models.Role;
@@ -9,6 +10,7 @@ import com.csetutorials.multiblogapp.models.Website;
 import com.csetutorials.multiblogapp.models.WebsiteSetting;
 import com.csetutorials.multiblogapp.models.WebsiteUser;
 import com.csetutorials.multiblogapp.repositories.CategoryRepository;
+import com.csetutorials.multiblogapp.repositories.CommentRepository;
 import com.csetutorials.multiblogapp.repositories.PageRepository;
 import com.csetutorials.multiblogapp.repositories.PostRepository;
 import com.csetutorials.multiblogapp.repositories.UserRepository;
@@ -47,6 +49,9 @@ public class MultiBlogApplication implements CommandLineRunner {
 	WebsiteRepository websiteRepository;
 	@Autowired
 	WebsiteSettingRepository websiteSettingRepository;
+
+	@Autowired
+	CommentRepository commentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MultiBlogApplication.class, args);
@@ -129,6 +134,21 @@ public class MultiBlogApplication implements CommandLineRunner {
 		p2.setCategories(Collections.singletonList(c1));
 		postRepository.save(p2);
 
+		Comment comment1 = new Comment();
+		comment1.setAuthor("Ashish Doneriya");
+		comment1.setEmail("ashishdoneriya@gmail.com");
+		comment1.setContent("thiasdfas dfasdfasd fasdfadfa f");
+		comment1.setCreated(System.currentTimeMillis());
+		comment1.setPost(p2);
+		commentRepository.save(comment1);
+
+		Comment comment2 = new Comment();
+		comment2.setAuthor("Shubham Namdev");
+		comment2.setEmail("ashishdoneriya@gmail.com");
+		comment2.setContent("thi adfadf adfadsasdfas dfasdfasd fasdfadfa f");
+		comment2.setCreated(System.currentTimeMillis());
+		comment2.setPost(p2);
+		commentRepository.save(comment2);
 	}
 
 }

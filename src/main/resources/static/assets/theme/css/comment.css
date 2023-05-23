@@ -1,0 +1,108 @@
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 0px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 9999;
+  font-size:14px;
+}
+
+.notification.show {
+  opacity: 1;
+}
+
+.message {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.comment-form input[type="text"],
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  color: #333;
+  font-size: 16px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.flex-container>* {
+  width: 100%;
+}
+
+.flex-container button {
+  width: 100%;
+  transition: background-color 0.5s ease-in-out, border 0.5s ease-in-out;
+  font-weight: bold;
+  font-size: 14px;
+  background-color: #703a88;
+  border: 1px solid #81439c;
+}
+
+.flex-container button:hover {
+  background-color: #555;
+  border: 1px solid #555;
+}
+
+
+/* Styling for comments section */
+.comments {
+  margin-top: 20px;
+}
+
+.comment {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comment .author {
+  font-weight: bold;
+}
+
+.comment .date {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.comment .content {
+  margin-top: 10px;
+}
+
+.comment a {
+  float:right;
+  cursor: pointer;
+  text-decoration:none;
+  padding-bottom: 0px;
+  color: #81439c !important;
+  touch-action: manipulation;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.comment input[type="text"],
+.comment textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  color: #333;
+  font-size: 16px;
+}

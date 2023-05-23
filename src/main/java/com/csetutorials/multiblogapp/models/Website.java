@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,9 +34,9 @@ public class Website {
 	@Column
 	String description;
 
-	@OneToMany(mappedBy = "website", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "website")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	List<WebsiteUser> websiteUsers;
+	WebsiteSetting settings;
 
 	@OneToMany(mappedBy = "website", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -56,8 +54,10 @@ public class Website {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Tag> tags;
 
-	@OneToOne(mappedBy = "website", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "website", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	WebsiteSetting settings;
+	List<Comment> comments;
+
+
 
 }

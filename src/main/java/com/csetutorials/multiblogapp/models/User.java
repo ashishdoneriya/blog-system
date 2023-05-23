@@ -52,7 +52,6 @@ public class User {
 	List<Page> pages;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	List<WebsiteUser> websiteUsers;
+	List<Comment> comments;
 
 }
