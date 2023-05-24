@@ -42,10 +42,9 @@ public class Comment {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	List<Comment> childComments;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "secondLevelParentId")
 	Comment secondLevelParentComment;
-
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")

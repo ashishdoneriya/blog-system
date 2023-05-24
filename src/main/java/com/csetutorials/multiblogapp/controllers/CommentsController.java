@@ -74,6 +74,9 @@ public class CommentsController {
 
 		String secondLevelParentCommentId = request.getParameter("secondLevelParentCommentId");
 		Comment secondLevelParentComment = commentRepository.findById(Long.valueOf(secondLevelParentCommentId)).get();
+		if (secondLevelParentComment == null) {
+			throw new RuntimeException("null sadfasdfkasd fsd");
+		}
 		comment.setSecondLevelParentComment(secondLevelParentComment);
 		commentRepository.save(comment);
 		return HttpStatus.OK;

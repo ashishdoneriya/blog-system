@@ -36,7 +36,7 @@
                 <span>Originally Published On </span><span> : </span><span>{{post.created | date("MMM dd,
                     yyyy")}}</span>
             </div>
-            <div class="comment-form clearfix">
+            <div class="comment-form clearfix" style="margin-top:100px;">
                 <h3>Leave a Comment</h3>
                 <form id="commentForm" onsubmit="event.preventDefault()">
                     <textarea name="content" rows="5" placeholder="Type here.." required></textarea>
@@ -50,28 +50,36 @@
             {% if post.comments is not null %}
             <div class="comments">
                 {% for comment in post.comments %}
+                {% if comment.firstLevelParentComment is null %}
                 <div class="entry-content comment" id="comment-div-{{comment.id}}">
                     <div class="author">{{comment.author}}</div>
                     <div class="date">{{comment.created | date("MMM dd, yyyy")}}</div>
                     <div class="content">{{comment.content}}</div>
-                    <div style="display:flex;justify-content:flex-end"><span><a onclick="openSecondLevelCommentForm({{post.id}}, {{comment.id}})">Reply</a></span>
+                    <div style="display:flex;justify-content:flex-end"><span><a
+                                onclick="openSecondLevelCommentForm({{post.id}}, {{comment.id}}, '{{comment.author}}')">Reply</a></span>
                     </div>
                     {% if comment.childComments is not null %}
-                        <div class="comments" style="margin-left:20px;">
-                            {% for childComment in comment.childComments %}
-                            <div class="entry-content comment" id="comment-div-{{childComment.id}}">
-                                <div class="author">{{childComment.author}}</div>
-                                <div class="date">{{childComment.created | date("MMM dd, yyyy")}}</div>
-                                <div class="content">{{childComment.content}}</div>
-                                <div style="display:flex;justify-content:flex-end"><span><a onclick="openThirdLevelCommentForm({{post.id}}, {{comment.id}}, {{childComment.id}})">Reply</a></span>
-                                    </div>
-                              </div>
-                                  
-                            {% endfor %}
-                        </div>  
-                        {% endif %}
-                    
+                    <div class="comments" style="margin-left:20px;">
+                        {% for childComment in comment.childComments %}
+                        <div class="entry-content comment" id="comment-div-{{childComment.id}}">
+                            <div class="author">{{childComment.author}}</div>
+                            <div class="date">{{childComment.created | date("MMM dd, yyyy")}}</div>
+                            <div class="content">
+                                {% if childComment.secondLevelParentComment is not null %}
+                                <span style="background-color: #703a88;padding:2px 5px;border-radius:3px;color:#fff">{{childComment.secondLevelParentComment.author}}</span>
+                                {% endif %}
+                                <span>{{childComment.content}}</span>
+                            </div>
+                            <div style="display:flex;justify-content:flex-end">
+                                <span><a onclick="openThirdLevelCommentForm({{post.id}}, {{comment.id}}, {{childComment.id}}, '{{childComment.author}}')">Reply</a></span>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
+                {% endif %}
                 {% endfor %}
             </div>
             {% endif %}
@@ -116,15 +124,15 @@
                 notification.style.opacity = '0'; // Set opacity directly
                 setTimeout(function () {
                     location.reload();
-                }, 1000);
-            }, 4000);
+                }, 500);
+            }, 2000);
         }
     }
 
-    function openSecondLevelCommentForm(postId, commentId) {
+    function openSecondLevelCommentForm(postId, commentId, authorName) {
         var div = document.getElementById('comment-div-' + commentId);
         div.innerHTML += `<form id="reply-to-form-${commentId}" onsubmit="event.preventDefault()">
-            <textarea name="content" rows="5" placeholder="Type here.." required></textarea>
+            <textarea name="content" rows="5" placeholder="Reply to ${authorName}" required></textarea>
             <div class="flex-container">
                 <div><input type="text" name="author" placeholder="Name" required /></div>
                 <div><input type="text" name="email" placeholder="Email" required /></div>
@@ -133,10 +141,10 @@
         </form>`;
     }
 
-    function openThirdLevelCommentForm(postId, firstLevelParentId, secondLevelParentId) {
+    function openThirdLevelCommentForm(postId, firstLevelParentId, secondLevelParentId, authorName) {
         var div = document.getElementById('comment-div-' + secondLevelParentId);
         div.innerHTML += `<form id="reply-to-form-${secondLevelParentId}" onsubmit="event.preventDefault()">
-            <textarea name="content" rows="5" placeholder="Type here.." required></textarea>
+            <textarea name="content" rows="5" placeholder="Reply to ${authorName}" required></textarea>
             <div class="flex-container">
                 <div><input type="text" name="author" placeholder="Name" required /></div>
                 <div><input type="text" name="email" placeholder="Email" required /></div>
@@ -167,14 +175,14 @@
         xhr.send(encodedData);
     }
 
-    function addSecondLevelComment(postId, firstLevelParentCommentId, secondLevelParentCommentId) {
+    function addThirdLevelComment(postId, firstLevelParentCommentId, secondLevelParentCommentId) {
         var form = document.getElementById('reply-to-form-' + secondLevelParentCommentId);
         var formData = new FormData(form);
         formData.append("postId", postId);
         formData.append("firstLevelParentCommentId", firstLevelParentCommentId);
         formData.append("secondLevelParentCommentId", secondLevelParentCommentId);
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/api/comments/add-second-level-comment", true);
+        xhr.open("POST", "/api/comments/add-third-level-comment", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onload = () => {
             if (xhr.status === 200) {
